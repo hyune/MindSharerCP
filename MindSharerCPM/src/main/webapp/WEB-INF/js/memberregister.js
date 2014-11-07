@@ -14,7 +14,7 @@ myModlue.controller('InputRegisterController', function ($scope, $http)
         	data : { "uid" : uid }
         }).success(function (data, status, headers, config)
             {
-        		if(data.status == "S" && data.result == "Y"){
+        		if(data.status == 0 && data.result == "Y"){
         			confirm("사용 가능한 아이디 입니다.");
         		}        		
         		$scope[isRedundancy] = true;
