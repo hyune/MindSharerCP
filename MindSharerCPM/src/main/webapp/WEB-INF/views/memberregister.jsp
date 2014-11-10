@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
-<script src="js/MemberRegisterCtrl.js"></script>
+<script src="/js/MemberRegisterCtrl.js"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>

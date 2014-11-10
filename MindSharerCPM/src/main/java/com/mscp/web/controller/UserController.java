@@ -1,6 +1,5 @@
-package com.mscp.web;
+package com.mscp.web.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -8,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +19,7 @@ import com.mscp.web.model.User;
 import com.mscp.web.service.UserService;
 
 @Controller
-@RequestMapping("/adduser")
+@RequestMapping("/user")
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -27,12 +27,20 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public @ResponseBody ResponseModel<User> login(@RequestBody Map params){
+		String uid = (String) params.get("uid");
+		String upw = (String) params.get("upw");
+				
+		return null;
+	}
+	
+	@RequestMapping(value ="/add", method = RequestMethod.GET)
 	public String addUser() {
 		return "memberregister";
 	}
 	
-	@RequestMapping(value="/redundancy", method = RequestMethod.POST)
+	@RequestMapping(value="/add/redundancy", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody ResponseModel<String> redundancyCheck(@RequestBody Map params){
 		String uid = (String) params.get("uid");
@@ -51,8 +59,7 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value="/result", 
-			method = RequestMethod.POST)
+	@RequestMapping(value="/add/result", method = RequestMethod.POST)
 	public @ResponseBody ResponseModel<User> addUserResult(@RequestBody User user) {
 		logger.info("addUser json=" + user.toString());
 		User inUser= null;
