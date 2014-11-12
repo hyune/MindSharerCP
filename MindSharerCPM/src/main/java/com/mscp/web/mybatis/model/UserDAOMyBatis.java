@@ -1,6 +1,7 @@
 package com.mscp.web.mybatis.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class UserDAOMyBatis implements UserDAO {
 	@Override
 	public User select(String uid) {
 		return temp.selectOne(getStatement("select"), uid);
+	}
+	
+	@Override
+	public User login(User user) {
+		return temp.selectOne(getStatement("login"), user);
 	}
 
 	@Override

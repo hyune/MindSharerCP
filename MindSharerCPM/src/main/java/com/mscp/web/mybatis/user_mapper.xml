@@ -23,6 +23,10 @@
 		select * from user where uid=#{uid}
 	</select>
 	
+	<select id="login" parameterType="User" resultType="User">
+		select * from user where uid=#{uid} and upw=#{upw}
+	</select>
+	
 	<select id="redundancyId" parameterType="string" resultType="int">
 		select count(*) from user where uid=#{uid}
 	</select>

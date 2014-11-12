@@ -8,6 +8,8 @@ public interface UserDAO {
 	
 	public User select(String uid);
 	
+	public User login(User user);
+	
 	public boolean checkRedundancy(String uid);
 	
 	public int insert(User dto);

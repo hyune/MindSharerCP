@@ -1,46 +1,60 @@
-package com.mscp.web.controller;
+package com.mscp.web.controller.non;
 
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.support.SessionStatus;
 
+import com.mscp.web.controller.auth.UserController;
 import com.mscp.web.model.ResponseModel;
 import com.mscp.web.model.User;
 import com.mscp.web.service.UserService;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
-	
+@RequestMapping("/non")
+public class NonAuthController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService service;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public @ResponseBody ResponseModel<User> login(@RequestBody Map params){
+	public @ResponseBody ResponseModel<User> login(HttpSession session, @RequestBody Map params){
 		String uid = (String) params.get("uid");
 		String upw = (String) params.get("upw");
-				
+		
+		User result = service.login(uid, upw);
+
+		ResponseModel<User> resp = new ResponseModel<User>();
+		if(result!=null){
+			session.setAttribute("myInfo", result);
+			
+			resp.setStatus(0);
+			resp.setResult(result);
+		}else{
+			resp.setStatus(1);
+		}
+		
 		return null;
 	}
 	
-	@RequestMapping(value ="/add", method = RequestMethod.GET)
+	@RequestMapping(value ="/adduser", method = RequestMethod.GET)
 	public String addUser() {
 		return "memberregister";
 	}
 	
-	@RequestMapping(value="/add/redundancy", method = RequestMethod.POST)
+	@RequestMapping(value="/adduser/redundancy", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody ResponseModel<String> redundancyCheck(@RequestBody Map params){
 		String uid = (String) params.get("uid");
@@ -59,7 +73,8 @@ public class UserController {
 		return result;
 	}
 
-	@RequestMapping(value="/add/result", method = RequestMethod.POST)
+
+	@RequestMapping(value="/adduser/result", method = RequestMethod.POST)
 	public @ResponseBody ResponseModel<User> addUserResult(@RequestBody User user) {
 		logger.info("addUser json=" + user.toString());
 		User inUser= null;

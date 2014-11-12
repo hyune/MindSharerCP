@@ -29,7 +29,7 @@ myModlue.controller('InputRegisterController', function ($scope, $http)
     $scope.redundancy = function(uid, isRedundancy){
         $http({
             method : "POST",
-            url : "/user/add/redundancy",
+            url : "/non/adduser/redundancy",
             data : { "uid" : uid }
         }).success(function (data, status, headers, config)
         {
@@ -52,7 +52,7 @@ myModlue.controller('InputRegisterController', function ($scope, $http)
     {
         $http({
             method : "POST",
-            url : "/user/add/result",
+            url : "/non/adduser/result",
             headers : "application/json",
             data : user
         }).success(function (data, status, headers, config)
