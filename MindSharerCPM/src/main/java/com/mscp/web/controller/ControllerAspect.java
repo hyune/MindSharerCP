@@ -1,5 +1,7 @@
 package com.mscp.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -7,19 +9,24 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.mscp.web.model.User;
 
 @Aspect
 @Component
 public class ControllerAspect {
 	Logger logger = LoggerFactory.getLogger(ControllerAspect.class);
 
-	@Pointcut("execution(public * com.mscp.web..controller.non.*Controller.*(..)) && @target(org.springframework.stereotype.Controller)")
+	@Pointcut("execution(public * com.mscp.web..controller.non..*Controller.*(..)) && @target(org.springframework.stereotype.Controller)")
 	public void nonController(){
 		logger.info("controller");
 		
 	}
 	
-	@Pointcut("execution(public * com.mscp.web..controller.auth.*Controller.*(..)) && @target(org.springframework.stereotype.Controller)")
+	@Pointcut("execution(public * com.mscp.web..controller.auth..*Controller.*(..)) && @target(org.springframework.stereotype.Controller)")
 	public void controller(){
 		logger.info("controller");
 		
@@ -27,26 +34,27 @@ public class ControllerAspect {
 	
 	@Pointcut("controller() && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
 	public void authRequestMapping() {
-		logger.info("requestMapping");
+		logger.info("requestMapping ");
 
 	}
 	
 	@Pointcut("nonController() && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
 	public void nonRequestMapping() {
-		logger.info("requestMapping");
+		logger.info("requestMapping ");
 
 	}
 	
 	@Before("nonRequestMapping()")
 	public void nonRequest(JoinPoint point){
-		logger.info("nonRequest join point="+point.toString());
+//		logger.info("nonRequest requestMapping="+requestMapping);
 
 		logging(point);
 	}
 	
 	@Before("authRequestMapping()")
 	public void authRequest(JoinPoint point){
-		logger.info("authRequest join point="+point.toString());
+//		logger.info("authRequest requestMapping="+requestMapping);
+//		logger.info("authRequest session myinfo="+session.getAttribute("myInfo"));
 		
 		logging(point);
 	}
@@ -54,7 +62,15 @@ public class ControllerAspect {
 	private void logging(JoinPoint point){
 		if(point == null) return;
 		
-		String info = point.toLongString() + " " + point.getKind();
+		String info = point.toString();
+		
+		RequestAttributes ra = RequestContextHolder.currentRequestAttributes();
+		if(ra!=null && ra instanceof ServletRequestAttributes){
+			HttpServletRequest req = ((ServletRequestAttributes)ra).getRequest();
+			User myinfo = (User) req.getSession().getAttribute("myInfo");
+			info += " req = "+req.getRequestURL().toString();
+			info += " user = "+myinfo;
+		}
 		
 		Object[] objs = null;
 		if((objs = point.getArgs())!=null){
