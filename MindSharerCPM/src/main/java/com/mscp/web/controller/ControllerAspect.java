@@ -52,25 +52,34 @@ public class ControllerAspect {
 	}
 	
 	@Before("authRequestMapping()")
-	public void authRequest(JoinPoint point){
+	public void authRequest(JoinPoint point) throws IllegalAccessException{
 //		logger.info("authRequest requestMapping="+requestMapping);
 //		logger.info("authRequest session myinfo="+session.getAttribute("myInfo"));
 		
 		logging(point);
+		
+		if(!checkSession()){
+			throw new IllegalAccessException("No Auth Session");
+		}
+	}
+	
+	private boolean checkSession(){
+		RequestAttributes ra = RequestContextHolder.currentRequestAttributes();
+		if(ra!=null && ra instanceof ServletRequestAttributes){
+			HttpServletRequest req = ((ServletRequestAttributes)ra).getRequest();
+			User myinfo = (User) req.getSession().getAttribute("myInfo");
+			
+			logger.info("checkSession user="+myinfo);
+			
+			return myinfo != null;
+		}
+		return false;
 	}
 	
 	private void logging(JoinPoint point){
 		if(point == null) return;
 		
 		String info = point.toString();
-		
-		RequestAttributes ra = RequestContextHolder.currentRequestAttributes();
-		if(ra!=null && ra instanceof ServletRequestAttributes){
-			HttpServletRequest req = ((ServletRequestAttributes)ra).getRequest();
-			User myinfo = (User) req.getSession().getAttribute("myInfo");
-			info += " req = "+req.getRequestURL().toString();
-			info += " user = "+myinfo;
-		}
 		
 		Object[] objs = null;
 		if((objs = point.getArgs())!=null){

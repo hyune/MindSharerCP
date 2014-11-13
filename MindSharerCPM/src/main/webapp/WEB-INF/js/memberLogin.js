@@ -9,7 +9,7 @@ angular.module('myApp', ['onsen.directives']).controller('loginchecker', functio
     $scope.sendLogin = function(uid, upw){
     	$http({
         	method : "POST",
-        	url : "adduser/redundancy",
+        	url : "login",
         	data : { "uid" : uid  , "upw" :  upw}
         }).success(function (data, status, headers, config)
             {

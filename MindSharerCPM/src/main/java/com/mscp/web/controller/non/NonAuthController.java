@@ -22,7 +22,6 @@ import com.mscp.web.model.User;
 import com.mscp.web.service.UserService;
 
 @Controller
-@RequestMapping("/non")
 public class NonAuthController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -46,15 +45,15 @@ public class NonAuthController {
 			resp.setStatus(1);
 		}
 		
-		return null;
+		return resp;
 	}
 	
-	@RequestMapping(value ="/adduser", method = RequestMethod.GET)
+	@RequestMapping(value ="/non/adduser", method = RequestMethod.GET)
 	public String addUser() {
 		return "memberregister";
 	}
 	
-	@RequestMapping(value="/adduser/redundancy", method = RequestMethod.POST)
+	@RequestMapping(value="/non/adduser/redundancy", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody ResponseModel<String> redundancyCheck(@RequestBody Map params){
 		String uid = (String) params.get("uid");
@@ -74,7 +73,7 @@ public class NonAuthController {
 	}
 
 
-	@RequestMapping(value="/adduser/result", method = RequestMethod.POST)
+	@RequestMapping(value="/non/adduser/result", method = RequestMethod.POST)
 	public @ResponseBody ResponseModel<User> addUserResult(@RequestBody User user) {
 		logger.info("addUser json=" + user.toString());
 		User inUser= null;

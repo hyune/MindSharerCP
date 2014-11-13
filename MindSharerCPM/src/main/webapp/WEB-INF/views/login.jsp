@@ -18,7 +18,7 @@
 
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>회원가입</title>
+<title>LOGIN</title>
 </head>
 <body>
 	<ons-page> <ons-navigator title="Login" var="myNavigator">
@@ -34,7 +34,7 @@
 				ng-minlength="4"  ng-maxlength="8" /> <br>
 			<br>
 			<ons-button modifier="large" class="login-button" 
-				ng-click="sendLogin(user.uid, user.upw)" disabled={{!UserForm.id_input.$error.pattern}}>로그인</ons-button>
+				ng-click="sendLogin(user.uid, user.upw)" disabled={{UserForm.id_input.$error.pattern}}>로그인</ons-button>
 		</form>
 		<br> <br>
 		<ons-button modifier="quiet">비번찾기</ons-button>
