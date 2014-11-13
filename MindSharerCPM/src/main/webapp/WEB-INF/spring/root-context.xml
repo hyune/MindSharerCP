@@ -27,6 +27,7 @@
 	<mvc:resources mapping="/lib/**" location="/WEB-INF/lib/" />
 	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
 	<mvc:resources mapping="/img/**" location="/WEB-INF/img/" />
+	<mvc:resources mapping="/views/**" location="/WEB-INF/views/" />
 	
 	<!-- Bean Definition (참고 : http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-annotation-config) -->
 	<!-- type

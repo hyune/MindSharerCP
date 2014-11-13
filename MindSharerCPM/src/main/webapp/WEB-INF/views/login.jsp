@@ -8,6 +8,7 @@
 <title>My App</title>
 <link rel="stylesheet" href="/lib/onsenui/build/css/onsenui.css">
 <link rel="stylesheet" href="/lib/onsenui/build/css/topcoat-mobile-onsen-ios7.css">
+<!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/> -->
 <link rel="stylesheet" href="/css/app.css" />
 <link rel="stylesheet" href="/css/style.css" />
 
@@ -18,23 +19,25 @@
 
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>LOGIN</title>
+<title>회원가입</title>
 </head>
+
 <body>
 	<ons-page> <ons-navigator title="Login" var="myNavigator">
 	<div class="login-form" ng-controller="loginchecker">
 		<form name="UserForm">
 			<input type="text" class="topcoat-text-input" placeholder="id" name="id_input"
 				value="" ng-model="user.uid"
+				ng-change="onIdChange()"
 				style="display: block; width: 100%; margin-top: 8px;"
-				ng-pattern="/^[a-z0-9]+$/" />
+				/>
 			 <input type="password"
 				class="topcoat-text-input" placeholder="Password" value="" name="pw"
 				ng-model="user.upw" style="display: block; width: 100%;" 
-				ng-minlength="4"  ng-maxlength="8" /> <br>
+				ng-change="onPwChange()"/> <br>
 			<br>
 			<ons-button modifier="large" class="login-button" 
-				ng-click="sendLogin(user.uid, user.upw)" disabled={{UserForm.id_input.$error.pattern}}>로그인</ons-button>
+				ng-click="sendLogin(user.uid, user.upw)" disabled={{!isIdPwChecked}}>로그인</ons-button>
 		</form>
 		<br> <br>
 		<ons-button modifier="quiet">비번찾기</ons-button>
