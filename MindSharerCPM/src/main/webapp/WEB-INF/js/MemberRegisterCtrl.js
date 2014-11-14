@@ -2,84 +2,72 @@
  * Created by karu on 2014-10-22.
  */
 
-app.controller('loginchecker', function ($scope, $http)
+app.directive('match', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        scope: {
+            match: '='
+        },
+        link: function(scope, elem, attrs, ctrl) {
+            scope.$watch(function() {
+                var modelValue = ctrl.$modelValue || ctrl.$$invalidModelValue;
+                return (ctrl.$pristine && angular.isUndefined(modelValue)) || scope.match === modelValue;
+            }, function(currentValue) {
+                ctrl.$setValidity('match', currentValue);
+            });
+        }
+    };
+});
+
+
+app.controller('InputRegisterController', function ($scope, $http)
 {
-	$scope.isIdChecked = false;
-	$scope.isPwChecked = false;
-	$scope.isIdPwChecked = false;
-	
-	//uid Legth 체크
-	function isIdLenthgCheck (uid){
-		return uid.length >=4;
-	}
-	
-	function isIdPattern (uid){
-		var regexp = "/^[a-z0-9]+$/"; 
-		return /^[a-z0-9]+$/.test(uid);
-	}
+    $scope.person1 = {};
 
-	function checkuIdInputValue (value){
-		if (!value) return;
-
-		if (isIdLenthgCheck(value)){
-			console.log("id input success");
-			 $scope.isIdChecked = true;
-		}else{
-			console.log("id input false");
-			$scope.isIdChecked = false;
-		}
-		
-		if ($scope.isIdChecked && $scope.isPwChecked) $scope.isIdPwChecked = true;
-		else $scope.isIdPwChecked = false;
-	}
-	
-	$scope.onIdChange = function (){
-		checkuIdInputValue($scope.user.uid);
-	}
-	
-	//upw Legth 체크
-	function isPwLengthCheck (upw){
-		return upw.length >=4;
-	}
-	
-	function checkuPwInputValue (value){
-		if (!value) return;
-		
-		if (isPwLengthCheck(value)){
-			console.log("pw input success");
-			 $scope.isPwChecked = true;
-		}else{
-			console.log("pw input false");
-			$scope.isPwChecked = false;
-		}
-		
-		if ($scope.isIdChecked && $scope.isPwChecked) $scope.isIdPwChecked = true;
-		else $scope.isIdPwChecked = false;
-	}
-	
-	$scope.onPwChange = function (){
-		checkuPwInputValue($scope.user.upw);
-	}
-
-    $scope.sendLogin = function(uid, upw){
-    	$http({
-        	method : "POST",
-        	url : "login",
-        	data : { "uid" : uid  , "upw" :  upw}
+    $scope.redundancy = function(uid, isRedundancy){
+        $http({
+            method : "POST",
+            url : "non/adduser/redundancy",
+            data : { "uid" : uid }
         }).success(function (data, status, headers, config)
-            {
-        		if(data.status == 0 && data.result != null){
-        			alert("로그인을 성공하셨습니다.");
-        		}else{
-        			alert("아이디와 비밀번호를 확인해주세여.");
-        			$scope.uid = "";
-        			$scope.upw = "";
-        		}        		
-        		
-            })
+        {
+            if(data.status == 0 && dㅁata.result == "Y"){
+            	alert("사용 가능한 아이디 입니다.");
+                $scope.isRedundancy = true;
+            }else{
+            	alert("중복된 아이디가 있습니다.");
+            	$scope.isRedundancy = false;
+            }
+           
+        })
             .error(function (data, status, headers, config)
             {
-            	alert("로그인을 실패하였습니다.");
+                $scope.isRedundancy = false;
             });
     }
+
+    $scope.submitData = function (user, resultVarName , isRedundancy)
+    {
+    	if (isRedundancy){
+    		 alert("아이디중복을 체크해주세요");
+    		return;
+    	}
+    	
+        $http({
+            method : "POST",
+            url : "non/adduser/result",
+            headers : "application/json",
+            data : user
+        }).success(function (data, status, headers, config)
+        {
+        	 if(data.status == 0){
+        		 alert("회원가입을 축하드립니다.");
+        	 }
+        })
+        .error(function (data, status, headers, config)
+        {
+        	 alert("알수 없는 오류");
+        });
+    };
 });
