@@ -7,13 +7,11 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.mscp.web.model.ResponseModel;
 import com.mscp.web.model.User;
@@ -25,6 +23,11 @@ public class NonAuthController {
 
 	@Autowired
 	private UserService service;
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String root(){
+		return "login";
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody ResponseModel<User> login(HttpSession session, @RequestBody Map params){
@@ -46,13 +49,7 @@ public class NonAuthController {
 		return resp;
 	}
 	
-	@RequestMapping(value ="/non/adduser", method = RequestMethod.GET)
-	public String addUser() {
-		return "memberregister";
-	}
-	
 	@RequestMapping(value="/non/adduser/redundancy", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody ResponseModel<String> redundancyCheck(@RequestBody Map params){
 		String uid = (String) params.get("uid");
 		
