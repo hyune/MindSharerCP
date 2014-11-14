@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mscp.web.model.ResponseModel;
@@ -20,7 +21,7 @@ import com.mscp.web.service.TimeLineService;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/timeline")
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -28,7 +29,7 @@ public class HomeController {
 	@Autowired
 	private TimeLineService service;
 	
-	@RequestMapping
+	@RequestMapping(value="/list", method=RequestMethod.POST)
 	public @ResponseBody ResponseModel<List<TimeLineUser>> getTimeLine(HttpSession session){
 		User myinfo = (User) session.getAttribute("myInfo");
 		

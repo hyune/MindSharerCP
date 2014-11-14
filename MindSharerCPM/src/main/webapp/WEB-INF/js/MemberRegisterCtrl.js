@@ -32,7 +32,7 @@ app.controller('InputRegisterController', function ($scope, $http)
             data : { "uid" : uid }
         }).success(function (data, status, headers, config)
         {
-            if(data.status == 0 && dㅁata.result == "Y"){
+            if(data.status == 0 && data.result == "Y"){
             	alert("사용 가능한 아이디 입니다.");
                 $scope.isRedundancy = true;
             }else{
