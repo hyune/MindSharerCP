@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.User">
+	
+	<resultMap type="User" id="UserResult">
+	<!-- primary key id로 정의 -->
+		<id column="uid" 				property="uid"/>
+		<result column="nickName" 		property="nickName"/>
+		<result column="deviceId"		property="deviceId"/>
+		<result column="regDttm"		property="regDttm"/>
+		<result column="updDttm" 		property="updDttm"/>
+		<result column="cpId" 			property="cpId"/>
+		<result column="cdPw" 			property="cdPw"/>
+		<result column="upw" 			property="upw"/>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="UserResult">
+		select * from user order by uid desc
+	</select>
+	
+	<select id="select" parameterType="string" resultType="User">
+		select * from user where uid=#{uid}
+	</select>
+	
+	<select id="login" parameterType="User" resultType="User">
+		select * from user where uid=#{uid} and upw=#{upw}
+	</select>
+	
+	<select id="redundancyId" parameterType="string" resultType="int">
+		select count(*) from user where uid=#{uid}
+	</select>
+	
+	<insert id="insert" parameterType="User">
+		insert into user(uid, nickName, upw, deviceId)
+		values(#{uid}, #{nickName}, #{upw}, #{deviceId})
+	</insert>
+	
+	<delete id="delete" parameterType="string">
+		delete user where uid=#{uid}
+	</delete>
+	
+	<update id="updateCp" parameterType="User" >
+		update user set cpId=#{cpId}, cdPw=#{cdPw} where uid=#{uid}
+	</update>
+	
+	<update id="updateNickName" parameterType="User" >
+		update user set nickName=#{nickName} where uid=#{uid}
+	</update>
+	
+</mapper>

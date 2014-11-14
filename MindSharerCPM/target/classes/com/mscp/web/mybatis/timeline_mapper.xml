@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.TimeLine">
+
+	<resultMap type="TimeLine" id="TLResult">
+		<!-- primary key id로 정의 -->
+		<id column="tlSeq" property="tlSeq" />
+		<result column="makerUid" property="makerUid" />
+		<result column="regDttm" property="regDttm" />
+		<result column="updDttm" property="updDttm" />
+		<result column="text" property="text" />
+		<result column="imgPath" property="imgPath" />
+		<result column="shareType" property="shareType" />
+	</resultMap>
+
+	<resultMap type="TimeLineUser" id="TLUserResult">
+		<!-- primary key id로 정의 -->
+		<id column="tlSeq" property="tlSeq" />
+		<result column="makerUid" property="makerUid" />
+		<result column="regDttm" property="regDttm" />
+		<result column="updDttm" property="updDttm" />
+		<result column="text" property="text" />
+		<result column="imgPath" property="imgPath" />
+		<result column="shareType" property="shareType" />
+		<association property="user" javaType="User">
+			<id column="uid" property="uid" />
+			<result column="nickName" property="nickName" />
+		</association>
+	</resultMap>
+
+	<select id="selectAllWithUser" parameterType="string" resultMap="TLUserResult">
+		select
+			a.*, 
+			b.uid,
+			b.nickName
+		from
+			timeLine a left outer join user b on a.makerUid = b.uid
+		where
+			a.makerUid=#{uid}
+		order by a.regDttm desc
+	</select>
+
+	<select id="select" parameterType="int" resultType="TimeLine">
+		select * from
+		timeLine where tlSeq=#{tlSeq}
+	</select>
+
+	<insert id="insert" parameterType="User">
+		insert into timeLine(makerUid,
+		text, imgPath, shareType)
+		values(#{makerUid}, #{text}, #{imgPath},
+		#{shareType})
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		delete timeLine where
+		tlSeq=#{tlSeq}
+	</delete>
+
+	<update id="updateText" parameterType="TimeLine">
+		update timeLine
+		set text=#{text} where tlSeq=#{tlSeq}
+	</update>
+
+</mapper>
