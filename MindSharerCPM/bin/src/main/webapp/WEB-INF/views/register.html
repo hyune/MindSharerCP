@@ -1,0 +1,49 @@
+<ons-page class="center"> <ons-navigator-toolbar
+	title="회원가입페이지"> </ons-navigator-toolbar>
+
+<div class="login-form" ng-controller="InputRegisterController">
+	<form name="UserForm">
+		<div>
+			<input type="text" ng-model="user.uid" name="id_input"
+				style="display: block; width: 100%; margin-top: 8px;"
+				ng-pattern="/^[a-z0-9]+$/" placeholder=" 아이디를 입력해주세요."
+				ng-minlength="3" ng-maxlength="8" required="true"
+				ng-disabled="isRedundancy">
+			<button ng-disabled="UserForm.id_input.$invalid"
+				class="topcoat-button--large"
+				style="display: block; width: 100%; margin-top: 8px;"
+				ng-click="redundancy(user.uid, isRedundancy)">중복체크</button>
+			<span class="error" ng-show="UserForm.id_input.$error.pattern">
+				영어와 숫자만 입력하세요.</span>
+		</div>
+		<div>
+			<input type="text" ng-model="user.nickName"
+				style="display: block; width: 100%; margin-top: 8px;"
+				placeholder=" 별칭을 입력해주세요.">
+		</div>
+		<div>
+			<input type="password" ng-model="user.upw" name="pw"
+				style="display: block; width: 100%; margin-top: 8px;"
+				placeholder=" 패스워드를 입력해주세요." ng-minlength="4" ng-maxlength="8"
+				data-ng-class="{'ng-invalid':UserForm.repw.$error.match}"> <span
+				ng-show="UserForm.pw.$dirty && UserForm.pw.$invalid">비밀번호 4자
+				이상</span>
+		</div>
+		<div>
+			<input type="password"
+				style="display: block; width: 100%; margin-top: 8px;"
+				placeholder=" 패스워드를 재입력해주세요.." ng-model="user.reupw"
+				data-match="user.upw" name="repw" ng-minlength="4" ng-maxlength="8">
+
+			<span ng-show="UserForm.repw.$error.match">Passwords do not
+				match!</span>
+		</div>
+		<button class="topcoat-button--large"
+			style="display: block; width: 100%; margin-top: 8px;" type="submit"
+			
+			ng-click="submitData(user, 'submitResult' , !isRedundancy)">가입하기</button>
+	</form>
+	<br>
+</div>
+
+</ons-page>

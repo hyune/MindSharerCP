@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+ 	
+	<!-- Enable the @AspectJ support -->
+	<!-- AOP(Aspect Oriented Programming) (참고 : http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop.html#aop-ataspectj) -->
+	<aop:aspectj-autoproxy />
+	
+	<context:annotation-config />
+	
+	<!-- @Configurable 지원 (참고 : http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop.html#aop-atconfigurable) -->
+    <context:spring-configured />
+    
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
+	<mvc:resources mapping="/lib/**" location="/WEB-INF/lib/" />
+	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
+	<mvc:resources mapping="/img/**" location="/WEB-INF/img/" />
+	<mvc:resources mapping="/views/**" location="/WEB-INF/views/" />
+	
+	<!-- Bean Definition (참고 : http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-annotation-config) -->
+	<!-- type
+		annotation : 클래스에 지정한 어노테이션이 적용 됐는지의 여부 expression 속성과 같은 어노테이션 이름
+		assignable : 클래스에서 지정한 타입으로 할당 가능한지의여부  expression 속성과 같은 타입 이름(class name)
+		regex : 클래스 이름이 정규 표현식에 메칭되는 지의 여부, expression 속성 "com.example.default.*" 과 매칭 되는 경우
+		aspectj : 클래스 이름이 AspectJ의 표현식에 매칭되는지의 여부, expression 속성 "com.example..*Service+" 와 같이 AspectJ 표현식 입력-->
+	<!-- <context:component-scan base-package="com.mscp.web" /> -->
+	
+	<mvc:annotation-driven/>
+	
+	<context:component-scan base-package="com.mscp.web" >
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<import resource="db_context.xml" />
+	<!--<import resource="service_context.xml"/> -->
+	
+</beans>
