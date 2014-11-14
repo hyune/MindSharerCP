@@ -2,7 +2,7 @@
  * Created by karu on 2014-10-22.
  */
 
-angular.module('myApp', ['onsen.directives']).controller('loginchecker', function ($scope, $http)
+app.controller('loginchecker', function ($scope, $http)
 {
 	$scope.isIdChecked = false;
 	$scope.isPwChecked = false;
