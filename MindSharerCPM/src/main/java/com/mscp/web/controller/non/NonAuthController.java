@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.support.SessionStatus;
 
-import com.mscp.web.controller.auth.UserController;
 import com.mscp.web.model.ResponseModel;
 import com.mscp.web.model.User;
 import com.mscp.web.service.UserService;
 
 @Controller
 public class NonAuthController {
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(NonAuthController.class);
 
 	@Autowired
 	private UserService service;

@@ -5,9 +5,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.mscp.web.model.User" alias="User" />
+		<typeAlias type="com.mscp.web.model.TimeLine" alias="TimeLine" />
+		<typeAlias type="com.mscp.web.model.TimeLineUser" alias="TimeLineUser" />
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="com/mscp/web/mybatis/user_mapper.xml" />
+		<mapper resource="com/mscp/web/mybatis/timeline_mapper.xml" />
 	</mappers>
 </configuration>

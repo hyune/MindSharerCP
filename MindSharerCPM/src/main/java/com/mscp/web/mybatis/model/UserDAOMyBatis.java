@@ -1,24 +1,18 @@
 package com.mscp.web.mybatis.model;
 
 import java.util.List;
-import java.util.Map;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mscp.web.model.User;
 import com.mscp.web.model.UserDAO;
 
 @Repository
-public class UserDAOMyBatis implements UserDAO {
-	private String Namespace = "mybatis.User.";
+public class UserDAOMyBatis extends DAOMyBatis implements UserDAO {
 	
-	@Autowired
-	private SqlSessionTemplate temp;
-	
-	private String getStatement(String id){
-		return Namespace+id;
+	@Override
+	protected String getNamespace() {
+		return "User";
 	}
 	
 	@Override
